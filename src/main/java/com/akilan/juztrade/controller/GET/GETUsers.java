@@ -13,7 +13,10 @@ public class GETUsers {
     @Autowired
     private UserService userService;
 
-
+    @GetMapping("/")
+    public String hello(){
+        return "<h1><i>the index of juz-trade api</i><h1>";
+    }
     @GetMapping("/user/{userId}")
     public static Object getUserById(@PathVariable("userId") String userId) {
         return new String("userId : " + userId);
