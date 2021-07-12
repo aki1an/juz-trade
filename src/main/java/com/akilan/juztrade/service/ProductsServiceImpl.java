@@ -12,6 +12,7 @@ import java.util.Optional;
 @Service
 public class ProductsServiceImpl implements ProductsService{
 
+
     @Autowired
     private ProductsRepo productsRepo;
     @Override
@@ -38,5 +39,9 @@ public class ProductsServiceImpl implements ProductsService{
     @Override
     public List<Products> findAllProducts() {
         return productsRepo.findAll();
+    }
+    @Override
+    public void deleteProductById(Products product) {
+         productsRepo.delete(product);
     }
 }

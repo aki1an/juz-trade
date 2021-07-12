@@ -15,4 +15,6 @@ public interface ProductsService {
     boolean createProducts(Products products);
 
     List<Products> findAllProducts();
+
+    void deleteProductById(Products product);
 }

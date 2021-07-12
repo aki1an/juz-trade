@@ -45,18 +45,38 @@ public class Products_POST {
         List<String> paths = new ArrayList();
 
         images
-                .forEach(image-> {
+                .forEach(image -> {
                     fileHelper.writeFile(image, image.getOriginalFilename());
                     paths.add(
                             ServletUriComponentsBuilder
                                     .fromCurrentContextPath()
-                                    .path("/image/"+image.getOriginalFilename())
+                                    .path("/image/" + image.getOriginalFilename())
                                     .toUriString());
                 });
         Products targetProduct = productsService.ProductsById(productId).get();
         targetProduct.setImages(paths.toArray(new String[0]));
         productsService.createProducts(targetProduct);
         return ResponseEntity.ok().body(targetProduct);
+    }
+
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity deleteUserById(@RequestParam("userId") String userId,
+                                         @RequestParam("password") String password,
+                                         @PathVariable("productId") Long productId) {
+        System.out.println(productId);
+        if (!userAuthenticator.isValidUser(userId, password))
+            return ResponseEntity.badRequest().body("not authorized user " +
+                    "\n " +
+                    "permission denied");
+
+        if (productsService.ProductsById(productId).isPresent()) {
+            Products product = productsService.ProductsById(productId).get();
+            productsService.deleteProductById(product);
+            return ResponseEntity.ok("product deleted : " + productId);
+        }
+
+        return ResponseEntity.badRequest().body("no such product found");
+
     }
 
 
