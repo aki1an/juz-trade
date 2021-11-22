@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Cart_POST {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private CartService cartService;
+
+    private final UserService userService;
+    private final CartService cartService;
+
+    public Cart_POST(UserService userService, CartService cartService) {
+        this.userService = userService;
+        this.cartService = cartService;
+    }
 
 
     @PostMapping("/cart")

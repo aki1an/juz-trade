@@ -17,18 +17,22 @@ import java.util.List;
 
 @RestController
 public class GETCart {
-    @Autowired
-    private CartService cartService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ProductsService productsService;
+
+    private final CartService cartService;
+    private final UserService userService;
+    private final ProductsService productsService;
+
+    public GETCart(CartService cartService, UserService userService, ProductsService productsService) {
+        this.cartService = cartService;
+        this.userService = userService;
+        this.productsService = productsService;
+    }
 
     @GetMapping("/cart")
-    public ResponseEntity getCart(@RequestParam("userId")String userId,
-                                  @RequestParam("password")String password){
+    public ResponseEntity getCart(@RequestParam("userId") String userId,
+                                  @RequestParam("password") String password) {
         //auth validation
-        if(!userService.isValidUser(userId,password))
+        if (!userService.isValidUser(userId, password))
             return ResponseEntity.badRequest().body("auth failed");
 
         //skeleton for the cart response
@@ -37,15 +41,15 @@ public class GETCart {
         //stores the productEntity
         List products = new ArrayList();
         //get the target cart by userId
-        Cart targetCart  = cartService.getUsersCart(userId).get();
+        Cart targetCart = cartService.getUsersCart(userId).get();
         //adding the product to the productList
         List<String> productList = Arrays.asList(targetCart.getProducts());
-        productList.forEach(product->{
+        productList.forEach(product -> {
             products.add(productsService.ProductsById(Long.valueOf(product)).get());
         });
-        cartWithItems.put("userId",userId);
-        cartWithItems.put("products",products);
-        cartWithItems.put("totalCost",targetCart.getTotalcost());
+        cartWithItems.put("userId", userId);
+        cartWithItems.put("products", products);
+        cartWithItems.put("totalCost", targetCart.getTotalcost());
 
         return ResponseEntity.ok().body(cartWithItems);
     }

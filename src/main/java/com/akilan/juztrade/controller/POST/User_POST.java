@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class User_POST {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public User_POST(UserService userService) {
+        this.userService = userService;
+    }
+
     @PostMapping("/register")
     public Object createUser(@RequestBody Users user){
         userService.createUser(user);

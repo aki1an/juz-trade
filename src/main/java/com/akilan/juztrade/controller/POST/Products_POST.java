@@ -16,12 +16,15 @@ import java.util.List;
 @RestController
 public class Products_POST {
 
-    @Autowired
-    private ProductsService productsService;
-    @Autowired
-    private UserService userAuthenticator;
-    @Autowired
-    private FileHelper fileHelper;
+    private final ProductsService productsService;
+    private final UserService userAuthenticator;
+    private final FileHelper fileHelper;
+
+    public Products_POST(ProductsService productsService, UserService userAuthenticator, FileHelper fileHelper) {
+        this.productsService = productsService;
+        this.userAuthenticator = userAuthenticator;
+        this.fileHelper = fileHelper;
+    }
 
     @PostMapping("/product/create")
     public ResponseEntity createProducts(@RequestParam("userId") String userId,

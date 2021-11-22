@@ -10,13 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GETUsers {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public GETUsers(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/")
     public String hello(){
         return "<h1><i>the index of juz-trade api</i><h1>";
     }
+
     @GetMapping("/user/{userId}")
     public static Object getUserById(@PathVariable("userId") String userId) {
         return new String("userId : " + userId);

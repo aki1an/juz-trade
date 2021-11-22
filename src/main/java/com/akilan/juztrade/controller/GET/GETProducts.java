@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 
 public class GETProducts {
-    @Autowired
-    private ProductsService productsService;
+    private final ProductsService productsService;
+
+    public GETProducts(ProductsService productsService) {
+        this.productsService = productsService;
+    }
 
     @GetMapping("/products/all")
     public Object allProducts(){
